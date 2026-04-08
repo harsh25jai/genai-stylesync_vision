@@ -3,3 +3,10 @@ google-cloud-logging
 fastapi
 uvicorn
 python-multipart
+python-dotenv
+google-genai
+google-cloud-storage
+sqlalchemy
+pg8000
+google-cloud-alloydb-connector[pg8000]
+gunicorn

@@ -1,0 +1,30 @@
+To be run in sql
+
+
+-- 1. Enable AI Extensions
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS google_ml_integration CASCADE;
+
+-- 2. Create the "Digital Wardrobe" table
+CREATE TABLE user_wardrobe (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(100),
+    garment_type VARCHAR(50),  -- e.g., 'Jacket'
+    color VARCHAR(30),
+    material VARCHAR(50),
+    style_tags TEXT[],         -- e.g., ['formal', 'vintage']
+    embedding vector(768),     -- Vector for similarity search
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 3. Create the "Style Preferences" table (Personalization)
+CREATE TABLE user_profiles (
+    user_id VARCHAR(100) PRIMARY KEY,
+    preferred_fit VARCHAR(50), -- e.g., 'Oversized'
+    size VARCHAR(10),
+    disliked_colors TEXT[]
+);
+
+-- 4. Enable Google ScaNN Index for ultra-fast vector search
+CREATE INDEX garment_embedding_idx ON user_wardrobe 
+USING scann (embedding cosine) WITH (num_leaves = 10);
